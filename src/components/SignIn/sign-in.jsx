@@ -54,7 +54,8 @@ const Login = () => {
           <input className='inputButton' type="button" onClick={handleSignIn} value='Sign In' />
         </div>
         <br></br>
-        <a href='/forgot-password'>Forgot password?</a>      
+        <a href='/forgot-password'>Forgot password?</a>  
+        <a href='/'>Return to Home Page</a>    
         {message && <p>{message}</p>}
       </div>
     </div>

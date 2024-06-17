@@ -13,10 +13,10 @@ const authenticateUser = (req, res, next) => {
 
 router.post('/geolocation', authenticateUser, async (req, res) => {
   const { latitude, longitude } = req.body;
-  const userId = req.session.user.id;
+  const { id: userId, username } = req.session.user;
 
   try {
-    const geolocation = new Geolocation({ userId, latitude, longitude });
+    const geolocation = new Geolocation({ userId, username, latitude, longitude });
     await geolocation.save();
     res.status(201).json({ message: 'Geolocation saved successfully' });
   } catch (error) {

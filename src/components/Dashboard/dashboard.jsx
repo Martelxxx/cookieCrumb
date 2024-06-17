@@ -162,7 +162,7 @@ const Dashboard = () => {
         <div className='matches'>
         {matchingGeolocations.map((geo) => (
         <div key={geo._id}>
-          <p>User ID: {geo.userId}</p>
+          <p>User Name: {geo.username}</p>
           <p>Latitude: {geo.latitude}</p>
           <p>Longitude: {geo.longitude}</p>
           <p>Created At: {new Date(geo.timestamp).toLocaleString()}</p>
