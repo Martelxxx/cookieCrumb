@@ -10,31 +10,6 @@ import axios from 'axios';
 import Profile from '../profilePicture';
 import Geolocation from '../../../models/geolocations';
 
-// async function getMatchesFromDB(location) {
-//     // Convert the latitude and longitude to strings
-//     let latString = location.latitude.toString();
-//     let lonString = location.longitude.toString();
-  
-//     // Split at the decimal point
-//     let [latWhole, latFraction] = latString.split('.');
-//     let [lonWhole, lonFraction] = lonString.split('.');
-  
-//     // Take the first 4 characters of the fractional part
-//     latFraction = latFraction.substring(0, 4);
-//     lonFraction = lonFraction.substring(0, 4);
-  
-//     // Combine the whole and fractional parts
-//     let lat = `${latWhole}.${latFraction}`;
-//     let lon = `${lonWhole}.${lonFraction}`;
-  
-//     const response = await fetch(`/api/matches?latitude=${lat}&longitude=${lon}`);
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-//     const matchingUsers = await response.json();
-//     return matchingUsers;
-//   }
-
 const Dashboard = () => {
   const { user, loading, logout } = useUser();
   const navigate = useNavigate();
@@ -134,13 +109,18 @@ const Dashboard = () => {
       <div className="dashboard-content">
         <h1>Welcome to Cookie Trail, {user.firstName}</h1>
         <p>This is the home page. Howdy</p>
-        {location.latitude && location.longitude && (
+    <div className="proPic">
+        {user.profilePicture && (
+            <img src={user.profilePicture} alt="Profile" style={{ width: '100px', height: '100px' }} />
+            )}
+    </div>
+        {/* {location.latitude && location.longitude && (
           <div>
             <p>Current Location:</p>
             <p>Latitude: {location.latitude}</p>
             <p>Longitude: {location.longitude}</p>
           </div>
-        )}
+        )} */}
         <button onClick={handleLogout}>Logout</button>
       </div>
       <div className="map">

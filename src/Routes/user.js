@@ -37,6 +37,37 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Update User
+router.put('/update', async (req, res) => {
+    const { oldUsername, newUsername, password } = req.body;
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const updatedUser = await User.findOneAndUpdate(
+        { username: oldUsername }, 
+        { username: newUsername, password: hashedPassword },
+        { new: true }
+      );
+      res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
+  // Delete User
+  router.delete('/delete', async (req, res) => {
+    const { username } = req.body;
+    try {
+      const user = await User.findOneAndDelete({ username });
+      if (user.profilePicture) {
+        // Assuming profilePicture is the path of the image
+        fs.unlinkSync(user.profilePicture); // Delete the profile picture from the file system
+      }
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
 // Logout User
 router.post('/logout', (req, res) => {
   req.session.destroy(err => {

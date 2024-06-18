@@ -6,7 +6,10 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  profilePicture: { type: String, default: 'https://www.gravatar.com/avatar/' },
+  profilePicture: {
+    data: { type: mongoose.Schema.Types.Buffer },
+    contentType: { type: String },
+  }
 });
 
 const User = mongoose.model('User', UserSchema);

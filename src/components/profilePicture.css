@@ -1,24 +1,104 @@
-.profileSettings {
+.profileSetCon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  
+  .profileSettings {
     position: absolute;
     bottom: 310px;
     left: -600px;
-    /* width: 300px; */
     transition: transform 0.3s ease-out;
-    justify-content: center;
-    border: 1px solid black;
-    background: rgba(150, 149, 146, 0.3); 
-    -webkit-backdrop-filter: blur(100px); /* Add this line */
-
-    backdrop-filter: blur(100px); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    padding: 1%;
-    width: auto;
+    padding: 20px;
+    border-radius: 10px;
     z-index: 1000;
+    width: 350px;
+    text-align: center;
   }
   
-  /* .profileSettings.hidden {
-    transform: translateX(100%);
-  } */
-
+  .profileSettings h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
   
+  .profileSettings p {
+    font-size: 16px;
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  .profileSettings img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .profileSettings button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .profileSettings button:hover {
+    background-color: #0056b3;
+  }
+  
+  .profileSettings input[type="file"] {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .profileSettings form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .profileSettings form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .profileSettings form input[type="text"],
+  .profileSettings form input[type="password"],
+  .profileSettings form input[type="submit"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(100% - 22px); /* Adjust for padding and border */
+  }
+  
+  .profileSettings form input[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .profileSettings form input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  .profileSettings p.message {
+    margin-top: 10px;
+    color: red;
+  }
   

@@ -10,9 +10,7 @@ import bcrypt from 'bcryptjs';
 import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
 import User from './models/user.js';
 import geolocationRoutes from './src/Routes/geolocation.js'; // Ensure this path is correct and matches the file location
 
@@ -22,24 +20,6 @@ const port = process.env.PORT || 3015;
 // Define __filename and __dirname to use ES6 modules with CommonJS
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// Multer setup for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, 'uploads/'));
-    },
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname);
-      cb(null, `${uuidv4()}${ext}`);
-    }
-  });
-  const upload = multer({ storage });
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -78,26 +58,47 @@ app.use(session({
   }
 }));
 
+// Multer setup for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 // Endpoint to upload a file
 app.post('/upload', upload.single('profilePicture'), async (req, res) => {
+    console.log('Upload route called');
     if (!req.session.user) {
+        console.log('Unauthorized access attempt');
         return res.status(401).json({ message: 'Unauthorized' });
     }
 
     try {
+        console.log('File received:', req.file); // Log the file received
+
+        if (!req.file) {
+            console.log('No file uploaded');
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
         const user = await User.findById(req.session.user.id);
         if (!user) {
+            console.log('User not found');
             return res.status(404).json({ message: 'User not found' });
         }
 
-        user.profilePicture = `/uploads/${req.file.filename}`;
+        console.log('Uploaded file buffer:', req.file.buffer);
+        console.log('Uploaded file mimetype:', req.file.mimetype);
+
+        user.profilePicture = {
+            data: req.file.buffer,
+            contentType: req.file.mimetype,
+        };
         await user.save();
 
-        res.status(200).json({ message: 'Profile picture uploaded successfully', profilePicture: user.profilePicture });
-  } catch (error) {
-    console.error('Error uploading profile picture:', error);
-    res.status(500).json({ message: 'Failed to upload profile picture', error: error.message });
-  }
+        console.log('Profile picture uploaded successfully');
+        res.status(200).json({ message: 'Profile picture uploaded successfully' });
+    } catch (error) {
+        console.error('Error uploading profile picture:', error);
+        res.status(500).json({ message: 'Failed to upload profile picture', error: error.message });
+    }
 });
 
 // Static route to serve uploaded files
@@ -106,7 +107,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Register route
 app.post('/register', async (req, res) => {
   console.log('from server', req.body);
-  const { username, firstName, lastName, password, confirmPassword, profilePicture } = req.body;
+  const { username, firstName, lastName, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
     return res.status(400).json({ message: 'Passwords do not match' });
@@ -123,22 +124,96 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Get user data route
+// Endpoint to get user data
 app.get('/user', async (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
-
-  try {
-    const user = await User.findById(req.session.user.id).select('firstName lastName username');
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+    if (!req.session.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch user data', error: error.message });
-  }
+
+    try {
+        const user = await User.findById(req.session.user.id).select('firstName lastName username profilePicture');
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const userData = user.toObject();
+        if (userData.profilePicture && userData.profilePicture.data) {
+            userData.profilePicture.data = userData.profilePicture.data.toString('base64');
+        }
+        res.status(200).json(userData);
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to fetch user data', error: error.message });
+    }
 });
+
+app.put('/update', async (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+  
+    const { username, firstName, lastName, password, confirmPassword } = req.body;
+  
+    if (password && password !== confirmPassword) {
+      return res.status(400).json({ message: 'Passwords do not match' });
+    }
+  
+    try {
+      const user = await User.findById(req.session.user.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      if (username) {
+        user.username = username;
+      }
+      if (firstName) {
+        user.firstName = firstName;
+      }
+      if (lastName) {
+        user.lastName = lastName;
+      }
+      if (password) {
+        user.password = await bcrypt.hash(password, 10);
+      }
+  
+      await user.save();
+  
+      // Update session user
+      req.session.user.username = user.username;
+      req.session.user.firstName = user.firstName;
+      req.session.user.lastName = user.lastName;
+  
+      res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+      console.error(`Error updating user: ${error.message}`);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Delete user profile picture route
+app.delete('/delete', async (req, res) => {
+    const { username } = req.body;
+  
+    if (!req.session.user || req.session.user.username !== username) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+  
+    try {
+      const user = await User.findOne({ username });
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      user.profilePicture = null;
+      await user.save();
+  
+      res.status(200).json({ message: 'Profile picture removed successfully' });
+    } catch (error) {
+      console.error('Error deleting profile picture:', error);
+      res.status(500).json({ message: 'Failed to remove profile picture', error: error.message });
+    }
+  });
+
 
 // Login route
 app.post('/login', async (req, res) => {
