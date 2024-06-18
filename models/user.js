@@ -9,7 +9,8 @@ const UserSchema = new mongoose.Schema({
   profilePicture: {
     data: { type: mongoose.Schema.Types.Buffer },
     contentType: { type: String },
-  }
+  },
+  likes: { type: Number, default: 0 }
 });
 
 const User = mongoose.model('User', UserSchema);

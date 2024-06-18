@@ -11,7 +11,9 @@ import cors from 'cors';
 import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import User from './models/user.js';
+import Geolocation from './models/geolocations.js';
 import geolocationRoutes from './src/Routes/geolocation.js'; // Ensure this path is correct and matches the file location
 
 const app = express();
@@ -72,6 +74,7 @@ app.post('/upload', upload.single('profilePicture'), async (req, res) => {
 
     try {
         console.log('File received:', req.file); // Log the file received
+        console.log('Request body:', req.body); // Log the request body
 
         if (!req.file) {
             console.log('No file uploaded');
@@ -214,6 +217,55 @@ app.delete('/delete', async (req, res) => {
     }
   });
 
+// Like route (GeoLocation)
+app.post('/like', async (req, res) => {
+    const { id } = req.body;
+    
+    if (!id) {
+      console.error('Geolocation ID is missing');
+      return res.status(400).json({ message: 'Geolocation ID is required' });
+    }
+  
+    try {
+      const geolocation = await Geolocation.findById(id);
+      if (!geolocation) {
+        console.error(`Geolocation not found for ID: ${id}`);
+        return res.status(404).json({ message: 'Geolocation not found' });
+      }
+  
+      geolocation.likes = (geolocation.likes || 0) + 1;
+      await geolocation.save();
+  
+      res.status(200).json({ likes: geolocation.likes });
+    } catch (error) {
+      console.error('Error liking geolocation:', error);
+      res.status(500).json({ message: 'Failed to like geolocation', error: error.message });
+    }
+  });
+
+  // Like route (profile)
+  app.post('/like', async (req, res) => {
+    // Get the ID of the user from the request body
+    const { id } = req.body;
+  
+    // Find the user in the database
+    const user = await User.findById(id);
+  
+    // If the user doesn't exist, return a 404 error
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+  
+    // Increment the number of likes
+    user.likes += 1;
+  
+    // Save the updated user
+    await user.save();
+  
+    // Return the updated user
+    res.json(user);
+  });
 
 // Login route
 app.post('/login', async (req, res) => {
