@@ -167,4 +167,9 @@ body {
     transform: translateX(500px); /* Adjust as needed */
   }
 
+  .mainPage.shifted1 {
+    transform: translateX(-500px);
+    transition: transform 0.5s ease-in-out;
+  }
+
   

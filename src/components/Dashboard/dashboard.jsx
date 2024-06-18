@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [likes, setLikes] = useState({});
   const [userLikes, setUserLikes] = useState(null);
   const [totalLikes, setTotalLikes] = useState(0);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     let intervalId;
@@ -134,6 +135,10 @@ const Dashboard = () => {
     return coord1.toFixed(5) === coord2.toFixed(5);
   };
 
+  const handleChatClick = () => {
+    setIsChatOpen(prevState => !prevState);
+  };
+
   const handleLogout = async () => {
     await logout();
     navigate('/signin');
@@ -155,12 +160,13 @@ const Dashboard = () => {
   return (
     <>
       <div className={`mainPage ${showProfilePicture ? 'shifted' : ''}`}>
+      <div className={`mainPage ${isChatOpen ? 'shifted1' : ''}`}>
         <div className="profileCon" data-counter="0">
           <div className="dashboard-container">
             <div className="dashboard-content">
               <h2>Welcome to Crumb Trail, {user.firstName}</h2>
               <p>This is the home page. Howdy</p>
-              <p>You have received {totalLikes} likes.</p>
+              <p>You have {totalLikes} cookies.</p>
               <div className="proPic">
                 {user.profilePicture && (
                   <img src={user.profilePicture} alt="Profile" style={{ width: '100px', height: '100px' }} />
@@ -205,13 +211,16 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <span className="flapText1"><b>Chat</b></span>
+          <span className="flapText1"onClick={handleChatClick}>
+            <b>{isChatOpen ? 'Close' : 'Chat'}</b>
+          </span>
           <span className="flapText2" onClick={handleOnClick}>
             <b>{showProfilePicture ? 'Return' : 'Settings'}</b>
           </span>
           {showProfilePicture && <Profile />}
         </div>
       </div>
+    </div>
     </>
   );
 };
