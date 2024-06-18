@@ -55,7 +55,7 @@
     flex-direction: column;
     justify-content: center;
     background: rgba(250, 249, 246, 0.1); 
-            backdrop-filter: blur(10px); 
+    backdrop-filter: blur(10px); 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: perspective(600px) rotateX(0deg);
     transition: transform 0.5s;

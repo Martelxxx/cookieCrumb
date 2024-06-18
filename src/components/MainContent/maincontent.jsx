@@ -32,7 +32,7 @@ const MainContent = () => {
       
 
     <div className='Container'>
-    <h1>Cookie Trail</h1>
+    <h1>Crumb Trail</h1>
       <div>
         <img src={cookieLogo} className="logo" alt="Cookie Trail logo" />
       </div>

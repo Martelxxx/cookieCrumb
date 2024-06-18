@@ -182,13 +182,12 @@ const Dashboard = () => {
     </div>
     <span class="flapText1"><b>Chat</b></span>
     <span className="flapText2" onClick={handleOnClick}>
-  <b>{showProfilePicture ? 'Dashboard' : 'Settings'}</b>
+  <b>{showProfilePicture ? 'Return' : 'Settings'}</b>
 </span>    
-<div className="profileSettings">
 {showProfilePicture && <Profile />}
 </div>
 </div>
-    </div>
+    
    </> 
   );
 };
