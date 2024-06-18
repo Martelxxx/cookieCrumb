@@ -27,7 +27,7 @@ router.post('/geolocation', authenticateUser, async (req, res) => {
 // Route to get all geolocations
 router.get('/geolocation', authenticateUser, async (req, res) => {
     try {
-      const geolocations = await Geolocation.find({ userId: req.session.user.id });
+      const geolocations = await Geolocation.find();
       console.log('from routes', geolocations);
       res.status(200).json(geolocations);
     } catch (error) {

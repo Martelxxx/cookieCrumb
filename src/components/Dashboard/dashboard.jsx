@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import './dashboard.css'; // Make sure to create a CSS file for styling
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import Profile from '../profilePicture';
 import Geolocation from '../../../models/geolocations';
 
 // async function getMatchesFromDB(location) {
@@ -40,6 +41,7 @@ const Dashboard = () => {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [matches, setMatches] = useState([]);
   const [geolocations, setGeolocations] = useState([]);
+  const [showProfilePicture, setShowProfilePicture] = useState(false);
 
   useEffect(() => {
     let intervalId;
@@ -94,12 +96,15 @@ const Dashboard = () => {
       });
   }, []);
 
+  const handleOnClick = () => {
+    setShowProfilePicture(prevShowProfilePicture => !prevShowProfilePicture);
+};
 
   const compareCoordinates = (coord1, coord2) => {
     if (coord1 === null || coord2 === null) {
       return false;
     }
-    return coord1.toFixed(4) === coord2.toFixed(4);
+    return coord1.toFixed(5) === coord2.toFixed(5);
   };
 
   // Filter geolocations to only include those that match the current location
@@ -122,7 +127,9 @@ const Dashboard = () => {
 
   return (
     <>
-    <div className="profileCon">
+    <div className={`mainPage ${showProfilePicture ? 'shifted' : ''}`}>
+
+    <div className="profileCon" data-counter="0">
     <div className="dashboard-container">
       <div className="dashboard-content">
         <h1>Welcome to Cookie Trail, {user.firstName}</h1>
@@ -163,17 +170,25 @@ const Dashboard = () => {
         {matchingGeolocations.map((geo) => (
         <div key={geo._id}>
           <p>User Name: {geo.username}</p>
-          <p>Latitude: {geo.latitude}</p>
-          <p>Longitude: {geo.longitude}</p>
-          <p>Created At: {new Date(geo.timestamp).toLocaleString()}</p>
+          {/* <p>Latitude: {geo.latitude}</p>
+          <p>Longitude: {geo.longitude}</p> */}
+          <p>Paths Crossed At: {new Date(geo.timestamp).toLocaleString()}</p>
+          <button>Chat</button>
           <hr />
         </div>
       ))}
     </div>
     </div>
     </div>
+    <span class="flapText1"><b>Chat</b></span>
+    <span className="flapText2" onClick={handleOnClick}>
+  <b>{showProfilePicture ? 'Dashboard' : 'Settings'}</b>
+</span>    
+<div className="profileSettings">
+{showProfilePicture && <Profile />}
 </div>
-    
+</div>
+    </div>
    </> 
   );
 };

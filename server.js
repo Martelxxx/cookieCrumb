@@ -8,10 +8,38 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import bcrypt from 'bcryptjs';
 import cors from 'cors';
+import multer from 'multer';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import User from './models/user.js';
 import geolocationRoutes from './src/Routes/geolocation.js'; // Ensure this path is correct and matches the file location
 
 const app = express();
 const port = process.env.PORT || 3015;
+
+// Define __filename and __dirname to use ES6 modules with CommonJS
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Ensure the uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, 'uploads/'));
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      cb(null, `${uuidv4()}${ext}`);
+    }
+  });
+  const upload = multer({ storage });
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -50,20 +78,35 @@ app.use(session({
   }
 }));
 
-// User model
-const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true }
+// Endpoint to upload a file
+app.post('/upload', upload.single('profilePicture'), async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.profilePicture = `/uploads/${req.file.filename}`;
+        await user.save();
+
+        res.status(200).json({ message: 'Profile picture uploaded successfully', profilePicture: user.profilePicture });
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    res.status(500).json({ message: 'Failed to upload profile picture', error: error.message });
+  }
 });
 
-const User = mongoose.model('User', UserSchema);
+// Static route to serve uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Register route
 app.post('/register', async (req, res) => {
   console.log('from server', req.body);
-  const { username, firstName, lastName, password, confirmPassword } = req.body;
+  const { username, firstName, lastName, password, confirmPassword, profilePicture } = req.body;
 
   if (password !== confirmPassword) {
     return res.status(400).json({ message: 'Passwords do not match' });

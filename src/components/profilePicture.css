@@ -1,0 +1,15 @@
+.profileSettings {
+    position: absolute;
+    top: -380px;
+    left: -300px;
+    width: 300px; /* Adjust as needed */
+    height: 100%; /* Adjust as needed */
+    transition: transform 0.3s ease-out;
+    justify-content: center;
+  }
+  
+  .profileSettings.hidden {
+    transform: translateX(100%);
+  }
+
+  

@@ -85,6 +85,62 @@ body {
   .profileCon > div {
     flex: 1; /* Make the children all the same height */
     width: 100%; /* Make the children all the same width */
+    position: relative; /* Add this line */
+}
+
+.profileCon::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 50px 50px 0; /* Adjust as needed */
+  border-style: solid;
+  border-color: #fff #fff transparent transparent; /* Adjust as needed */
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.3); /* Adjust as needed */
+}
+
+.flapText1 {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 5px; /* Adjust as needed */
+    transform: rotate(-315deg);
+    color: #E1C16E; /* Adjust as needed */
+    font-size: 15px; /* Adjust as needed */
+  }
+
+  .flapText1:hover {
+    text-shadow: 2px 2px 4px red; /* Adjust as needed */
+    background-color: blue;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+.flapText2 {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: -5px; /* Adjust as needed */
+    transform: rotate(-45deg);
+    color: #E1C16E; /* Adjust as needed */
+    font-size: 15px; /* Adjust as needed */
+    z-index: 1;
+}
+
+.flapText2:hover {
+    text-shadow: 2px 2px 4px red; /* Adjust as needed */
+    background-color: blue;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+.profileCon::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-width: 0 0 50px 50px; /* Adjust as needed */
+    border-style: solid;
+    border-color: transparent transparent #fff #fff; /* Adjust as needed */
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); /* Adjust as needed */
   }
 
   .matches {
@@ -101,3 +157,14 @@ body {
     padding-right: 5%;
     font-size: 0.8rem;
 }
+
+.mainPage {
+    transition: transform 0.3s ease-out;
+    position: relative;
+  }
+  
+  .mainPage.shifted {
+    transform: translateX(500px); /* Adjust as needed */
+  }
+
+  
