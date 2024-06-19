@@ -8,6 +8,11 @@ import './dashboard.css'; // Make sure to create a CSS file for styling
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import Profile from '../profilePicture';
+import UserWall from '../Wall/userWall';
+// import Chat from '../Chat/chat';
+// import io from 'socket.io-client';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Geolocation from '../../../models/geolocations';
 
 const Dashboard = () => {
@@ -19,7 +24,13 @@ const Dashboard = () => {
   const [likes, setLikes] = useState({});
   const [userLikes, setUserLikes] = useState(null);
   const [totalLikes, setTotalLikes] = useState(0);
-  const [isChatOpen, setIsChatOpen] = useState(false);
+//   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [recipientId, setRecipientId] = useState(null);
+  const [newMessages, setNewMessages] = useState({}); // State to track new messages for each user
+//   const [showChat, setShowChat] = useState(false);
+  const [showWall, setShowWall] = useState(false);
+  const [wallMessage, setWallMessage] = useState('');
+  const [currentRecipient, setCurrentRecipient] = useState(null);
 
   useEffect(() => {
     let intervalId;
@@ -124,6 +135,30 @@ const Dashboard = () => {
     }
   }, [user]);
 
+//   useEffect(() => {
+//     if (user && user.id) {
+//       const socket = io('http://localhost:3015');
+
+//       console.log('Joining room:', user.id);
+//       socket.emit('joinRoom', user.id);
+
+//       socket.on('privateMessage', (data) => {
+//         console.log('Message received:', data);
+//         const { from } = data;
+//         setNewMessages((prev) => ({
+//           ...prev,
+//           [from]: (prev[from] || 0) + 1,
+//         }));
+//         setShowChat(true); // Show chat window when a new message is received
+//         toast('New message received!');
+//       });
+
+//       return () => {
+//         socket.off('privateMessage');
+//       };
+//     }
+//   }, [user]);
+
   const handleOnClick = () => {
     setShowProfilePicture((prevShowProfilePicture) => !prevShowProfilePicture);
   };
@@ -132,17 +167,39 @@ const Dashboard = () => {
     if (coord1 === null || coord2 === null) {
       return false;
     }
-    return coord1.toFixed(5) === coord2.toFixed(5);
+    return coord1.toFixed(3) === coord2.toFixed(3);
   };
 
-  const handleChatClick = () => {
-    setIsChatOpen(prevState => !prevState);
+  const handleWallClick = () => {
+    setShowWall((prevShowWall) => !prevShowWall);
   };
 
   const handleLogout = async () => {
     await logout();
     navigate('/signin');
   };
+
+  const postToWall = async (recipientId) => {
+    try {
+      const response = await axios.post('http://localhost:3015/api/postMessage', {
+        recipientId,
+        message: wallMessage,
+      }, { withCredentials: true });
+      if (response.status === 201) {
+        toast('Message posted to wall!');
+        setWallMessage(''); // Clear the message input
+      }
+    } catch (error) {
+      console.error('Error posting message to wall:', error);
+      toast('Failed to post message');
+    }
+  };
+
+//   const initiateChat = (id) => {
+//     setRecipientId(id);
+//     setNewMessages((prev) => ({ ...prev, [id]: 0 })); // Reset new messages count for this recipient
+//     setShowChat(true); // Show chat window when initiating chat
+//   };
 
   if (loading) {
     return <div>Loading...</div>; // Handle loading state
@@ -160,7 +217,7 @@ const Dashboard = () => {
   return (
     <>
       <div className={`mainPage ${showProfilePicture ? 'shifted' : ''}`}>
-      <div className={`mainPage ${isChatOpen ? 'shifted1' : ''}`}>
+      <div className={`mainPage ${showWall ? 'shifted1' : ''}`}>
         <div className="profileCon" data-counter="0">
           <div className="dashboard-container">
             <div className="dashboard-content">
@@ -204,16 +261,28 @@ const Dashboard = () => {
                     <p>Paths Crossed At: {new Date(geo.timestamp).toLocaleString()}</p>
                     <p>Likes: {likes[geo._id]}</p>
                     <button onClick={() => handleLike(geo._id)}>Like</button>
-                    <button>Chat</button>
+                    <button onClick={() => setCurrentRecipient(geo._id)}>Post to Wall</button>
+                    {currentRecipient === geo._id && (
+                        <div>
+                        <input
+                            type="text"
+                            value={wallMessage}
+                            onChange={(e) => setWallMessage(e.target.value)}
+                            placeholder="Write a message..."
+                        />
+                        <button onClick={() => postToWall(geo._id)}>Submit</button>
                     <hr />
                   </div>
+                )}
+                </div>
                 ))}
               </div>
             </div>
           </div>
-          <span className="flapText1"onClick={handleChatClick}>
-            <b>{isChatOpen ? 'Close' : 'Chat'}</b>
+          <span className="flapText1"onClick={handleWallClick}>
+            <b>{showWall ? 'Close' : 'Wall'}</b>
           </span>
+          {showWall && <UserWall userId={user._id} />}
           <span className="flapText2" onClick={handleOnClick}>
             <b>{showProfilePicture ? 'Return' : 'Settings'}</b>
           </span>
