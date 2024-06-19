@@ -47,16 +47,17 @@ const UserWall = ({ userId }) => {
     <div className="wallSetCon">
       <div className="wallSettings">
         <h2>Wall</h2>
-        <button onClick={fetchMessages}>Refresh Messages</button> {/* Button to fetch messages */}
-        <div className="wallMessages">
+        {/* <div className="wallMessages"> */}
           {messages && messages.map((msg) => (
-            <div key={msg._id} className="wallMessage">
-              <div>{msg.sender.username}</div>
-              <div>{msg.message}</div>
+            <div key={msg._id} className="wallMessages">
+              <div>From: {msg.sender.username}</div>
+              <div>Recipient: {msg.recipient}</div>
+              <div>Message: {msg.message}</div>
               <div>{new Date(msg.timestamp).toLocaleString()}</div>
             </div>
           ))}
-        </div>
+        {/* </div> */}
+        <button className="refreshButton" onClick={fetchMessages}>Refresh Messages</button> {/* Button to fetch messages */}
       </div>
     </div>
   );

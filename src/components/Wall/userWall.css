@@ -7,10 +7,9 @@
   }
   
   .wallSettings {
-    position: absolute;
-    bottom: 310px;
-    left: 1250px;
-    transition: transform 0.3s ease-out;
+    position: absolute; /* Keeps it positioned relative to its closest positioned ancestor */
+    bottom: 120px; /* Aligns it at the bottom */
+    left: 1250px; /* Adjust as necessary for horizontal positioning */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,6 +22,8 @@
     z-index: 1000;
     width: 350px;
     text-align: center;
+    height: 600px; /* Fixed height */
+    overflow-y: auto; /* Make it scrollable */
   }
   
   .wallSettings h1 {
@@ -101,4 +102,26 @@
     margin-top: 10px;
     color: red;
   }
+
+  .refreshButton {
+    position: sticky; /* Fixed positioning */
+    bottom: 0; /* Stick to the bottom */
+    /* Add left or right property as needed to position horizontally */
+  }
   
+  .wallMessages {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(250, 249, 246, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transform: perspective(600px) rotateX(0deg);
+    transition: transform 0.5s;
+    /* background-color: #FAF9F6; */
+    align-items: center;
+    height: 90vh;
+    width: 90%;
+  }

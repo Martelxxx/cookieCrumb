@@ -46,14 +46,12 @@ router.post('/postMessage', authenticateUser, async (req, res) => {
   }
 });
 
-// Route to get messages for a user's wall
+// Route to get all messages
 router.get('/getMessages', authenticateUser, async (req, res) => {
-  const { recipientId } = req.query;
-
-  console.log('Get Messages Request:', { recipientId });
+  console.log('Get All Messages Request');
 
   try {
-    const messages = await WallMessage.find({ recipient: recipientId }).populate('sender', 'username').sort({ timestamp: -1 });
+    const messages = await WallMessage.find().populate('sender', 'username').sort({ timestamp: -1 });
     console.log('Fetched messages:', messages);
     res.status(200).json(messages);
   } catch (error) {
