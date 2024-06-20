@@ -6,13 +6,13 @@
 }
 
 .logo {
-  height: 6em;
+  height: 8.5em;
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #CC7722);
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
@@ -34,7 +34,11 @@
 }
 
 .card {
-  padding: 2em;
+  background-color: #C19A6B;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .read-the-docs {
@@ -48,13 +52,13 @@
 
 .Container {
   flex: 1;
-  border: 1px solid #FFDEAD;
+  border: 1px solid #F0E68C;
     border-radius: 8px;
-    padding: 16px;
+    /* padding: 16px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background: rgba(250, 249, 246, 0.1); 
+    /* background: rgba(110, 38, 14, 0.3);  */
     backdrop-filter: blur(10px); 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: perspective(600px) rotateX(0deg);
@@ -62,16 +66,39 @@
     /* background-color: #FAF9F6; */
     align-items: center;
     height: 80vh;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
     gap: .5rem;
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C;
   }
 
   .card {
-    background-color: red;
+    /* background-color: #722F37; */
     text-align: center;
     font-family: 'Nunito', sans-serif;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    font-size: 0.98rem;
+  }
+
+  .card p {
+    margin: 0 0 10px;
+  }
+
+  .card button {
+    padding: 2px 5px;
+    border: none;
+    background-color: #7C3030;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .card button:hover {
+    background-color: #C2B280;
   }
 
   .homeContainer {
@@ -83,16 +110,20 @@
     justify-content: center;
     height: 80vh;
     gap: 1.5rem;
+    padding: 20px;
   }
 
   .text {
     font-size: 1.2rem;
     font-weight: 500;
-    background-color: #FFFDD0;
+    background-color: #7C3030;
     color: #333;
-    border: 1px solid #F3E5AB;
+    border: 1px solid #F0E68C;
     padding: 5px;
     border-radius: 5px;
+    display: flex;
+  flex-direction: column;
+  gap: 20px;
   }
 
   .textor {
@@ -108,4 +139,85 @@
   .text:hover {
     background-color: #FFF5EE;
     border: 1px solid #F3E5AB;
+  }
+
+  
+
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  .content {
+    flex: 1;
+    padding-bottom: 40px; /* Adjust the padding as needed to create space */
+  }
+  
+  .footer {
+    background: linear-gradient(to bottom,#FFFFFF, #F2D2BD ); /* Gradient from light brown to white */
+    box-shadow: 0 4px 8px rgba(233, 116, 81, 0.5); /* Box shadow with the specified color */
+    padding: 2px;
+    text-align: center;
+    width: 100%;
+    display: flex;          /* Add Flexbox display */
+    align-items: flex-end;  /* Align items to the bottom */
+    justify-content: space-between;/* Center the content horizontally */
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    transition: height 0.3s ease-in-out; /* Add transition for height */
+    height: 60px; /* Default height */
+    border-radius: 5px;
+  }
+  
+  .footer.small {
+    height: 30px; /* Smaller height for animation */
+  }
+
+  .smallTalk {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .triangle {
+    position: relative;
+  width: 360px; /* Set your desired width */
+  height: 360px; /* Set your desired height */
+  border: 1px solid #ccc; /* Optional border for visibility */
+  overflow: hidden; 
+  }
+
+  .movingImage {
+    position: absolute;
+    transition: transform 1s ease-in-out;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+  }
+
+  @keyframes moveAround {
+    0% {
+      top: 0;
+      left: 0;
+    }
+    25% {
+      top: 0;
+      left: calc(100% - 100px); /* Adjust based on image size */
+    }
+    50% {
+      top: calc(100% - 100px); /* Adjust based on image size */
+      left: calc(100% - 100px); /* Adjust based on image size */
+    }
+    75% {
+      top: calc(100% - 100px); /* Adjust based on image size */
+      left: 0;
+    }
+    100% {
+      top: 0;
+      left: 0;
+    }
   }

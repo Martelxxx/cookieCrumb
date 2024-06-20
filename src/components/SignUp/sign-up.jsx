@@ -73,7 +73,21 @@ const SignUp = () => {
     <div className='loginContainer'>
       <div className='mainContainer'>
         <div className='titleContainer'>
-          <div>Sign Up</div>
+          <div>Create an Account</div>
+        </div>
+        <p className='smallText'>Sign up with your social media account or email address</p>
+        <div className='socialMedia'>
+          <div className='fb'><i className="fab fa-facebook-f"></i>Facebook</div>
+          <div className='twt'>Twitter</div>
+          <div className='goog'>Google</div>
+        </div>
+        <br />
+        <div className='sepCon'>
+          <div className='line'></div>
+          <div className='or-circle'>
+        <span className='or'>or</span>
+        </div>
+        <div class='line'></div>
         </div>
         <br />
         <div className='inputContainer'>
@@ -130,6 +144,9 @@ const SignUp = () => {
         <br />
         <div className='inputContainer'>
           <input className='inputButton' type="button" onClick={handleSignUp} value='Sign Up' />
+          <p className='smallText'>Already have an account? Click <a href='/signin'>here</a></p>
+          <p className='smallText'>Click <a href='/'>here</a> to return Home</p>
+
           {countdown !== null && <p>Redirecting in {countdown}...</p>} {/* Display the countdown */}
 
         </div>

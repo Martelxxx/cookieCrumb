@@ -9,8 +9,9 @@ import { UserProvider } from './components/context.jsx';
 import User from '../models/user.js';
 
 
-function App() {
+const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isFooterSmall, setIsFooterSmall] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -19,17 +20,30 @@ function App() {
     }
   }, []);
 
+  const handleSignInClick = () => {
+    setIsFooterSmall(true); // Make footer smaller on sign-in click
+  };
+
   return (
     <UserProvider>
     <Router>
       <div className="App">
+      <div className="content">
         <Routes>
           <Route path="/" element={<MainContent />} />
-          <Route path="/signin" element={<Login />} />
+          <Route path="/signin" element={<Login onSignInClick={handleSignInClick} />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
+      <footer className={`footer ${isFooterSmall ? 'small' : ''}`}>
+            <p>&copy; 2024 Crumb Trail. All rights reserved.</p>
+            <div className='smallTalk'>
+            <p>Terms & Conditions</p>
+            <p>Privacy Policy</p>
+            </div>
+          </footer>
+          </div>
     </Router>
     </UserProvider>
   );

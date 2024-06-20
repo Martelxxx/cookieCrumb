@@ -1,9 +1,25 @@
 .profileSetCon {
+    flex: 1;
+  border: 1px solid #F0E68C;
+    border-radius: 8px;
+    /* padding: 16px; */
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    /* background: rgba(110, 38, 14, 0.3);  */
+    backdrop-filter: blur(10px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transform: perspective(600px) rotateX(0deg);
+    transition: transform 0.5s;
+    /* background-color: #FAF9F6; */
     align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
+    height: 80vh;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+    gap: .5rem;
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C;
   }
   
   .profileSettings {
@@ -79,10 +95,10 @@
   .profileSettings form input[type="text"],
   .profileSettings form input[type="password"],
   .profileSettings form input[type="submit"] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 80%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
     width: calc(100% - 22px); /* Adjust for padding and border */
   }
   

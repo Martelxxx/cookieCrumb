@@ -8,12 +8,13 @@
   
   .wallSettings {
     position: absolute; /* Keeps it positioned relative to its closest positioned ancestor */
-    bottom: 120px; /* Aligns it at the bottom */
+    bottom: 90px; /* Aligns it at the bottom */
     left: 1250px; /* Adjust as necessary for horizontal positioning */
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    border: 1px solid #F0E68C;
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
@@ -24,7 +25,9 @@
     text-align: center;
     height: 600px; /* Fixed height */
     overflow-y: auto; /* Make it scrollable */
-  }
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C;
+}
   
   .wallSettings h1 {
     font-size: 24px;

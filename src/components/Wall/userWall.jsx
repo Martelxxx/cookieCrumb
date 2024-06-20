@@ -51,7 +51,7 @@ const UserWall = ({ userId }) => {
           {messages && messages.map((msg) => (
             <div key={msg._id} className="wallMessages">
               <div>From: {msg.sender.username}</div>
-              <div>Recipient: {msg.recipient}</div>
+              {/* <div>Recipient: {msg.recipient}</div> */}
               <div>Message: {msg.message}</div>
               <div>{new Date(msg.timestamp).toLocaleString()}</div>
             </div>

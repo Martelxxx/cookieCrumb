@@ -25,40 +25,59 @@ const Login = () => {
   };
 
   return (
-    <div className='loginContainer'>
-      <div className='mainContainer'>
-        <div className='titleContainer'>
-          <div>Sign In</div>
+    <>
+      <div className='loginContainer'>
+        <div className='mainContainer'>
+          <div className='titleContainer'>
+            <div>Sign In</div>
+          </div>
+          <p className='smallText'>Sign in with your social media account or email address</p>
+          <div className='socialMedia'>
+            <div className='fb'><i className="fab fa-facebook-f"></i>Facebook</div>
+            <div className='twt'>Twitter</div>
+            <div className='goog'>Google</div>
+          </div>
+          <br />
+          <div className='sepCon'>
+            <div className='line'></div>
+            <div className='or-circle'>
+              <span className='or'>or</span>
+            </div>
+            <div className='line'></div>
+          </div>
+          <br />
+          <div className='inputContainer'>
+            <input
+              value={username}
+              placeholder="Enter your username here"
+              onChange={(event) => setUsername(event.target.value)}
+              className='inputBox'
+            />
+          </div>
+          <br />
+          <div className='inputContainer'>
+            <input
+              type="password"
+              value={password}
+              placeholder="Enter your password here"
+              onChange={(event) => setPassword(event.target.value)}
+              className='inputBox'
+            />
+          </div>
+          <br />
+          <div className='inputContainer'>
+            <input className='inputButton' type="button" onClick={handleSignIn} value='Sign In' />
+          </div>
+          <br />
+          <div>
+            <a href='/forgot-password'>Forgot password?</a>  
+          </div>
+          <br />
+          <p className='smallText'>Click <a href='/'>here</a> to return Home</p>   
+          {message && <p>{message}</p>}
         </div>
-        <br />
-        <div className='inputContainer'>
-          <input
-            value={username}
-            placeholder="Enter your username here"
-            onChange={(event) => setUsername(event.target.value)}
-            className='inputBox'
-          />
-        </div>
-        <br />
-        <div className='inputContainer'>
-          <input
-            type="password"
-            value={password}
-            placeholder="Enter your password here"
-            onChange={(event) => setPassword(event.target.value)}
-            className='inputBox'
-          />
-        </div>
-        <br />
-        <div className='inputContainer'>
-          <input className='inputButton' type="button" onClick={handleSignIn} value='Sign In' />
-        </div>
-        <br></br>
-        <a href='/forgot-password'>Forgot password?</a>  
-        <a href='/'>Return to Home Page</a>    
-        {message && <p>{message}</p>}
       </div>
-    </div>
+    </>
   );
 };
 

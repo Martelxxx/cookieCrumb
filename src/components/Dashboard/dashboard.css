@@ -35,12 +35,27 @@ body {
   
   /* Content area for the dashboard (excluding the map) */
   .dashboard-content {
+    flex: 1;
+  border: 1px solid #F0E68C;
+    border-radius: 8px;
+    /* padding: 16px; */
     display: flex;
     flex-direction: column;
-    padding: 20px; /* Add some padding for better spacing */
-    z-index: 1; /* Ensure this is above the map */
-    background-color: blue; /* Ensure background color is set */
-    border: 5px solid black; /* Add a border for better visibility */
+    justify-content: center;
+    /* background: rgba(110, 38, 14, 0.3);  */
+    backdrop-filter: blur(10px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transform: perspective(600px) rotateX(0deg);
+    transition: transform 0.5s;
+    /* background-color: #FAF9F6; */
+    align-items: center;
+    height: 80vh;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+    gap: .5rem;
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C; /* Add a border for better visibility */
   }
   
   /* Map container with fixed height */
@@ -59,13 +74,27 @@ body {
   }
 
   .profileInfo {
+    flex: 1;
+  border: 1px solid #F0E68C;
+    border-radius: 8px;
+    /* padding: 16px; */
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1%;
-    align-items: center;
     justify-content: center;
-    border: 5px solid black;
+    /* background: rgba(110, 38, 14, 0.3);  */
+    backdrop-filter: blur(10px); 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    transform: perspective(600px) rotateX(0deg);
+    transition: transform 0.5s;
+    /* background-color: #FAF9F6; */
+    align-items: center;
+    height: 80vh;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+    gap: .5rem;
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C;;
   }
 
   .profileCon {
