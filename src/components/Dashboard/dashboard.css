@@ -58,7 +58,7 @@ body {
     border-bottom: 10px solid #D2B48C; /* Add a border for better visibility */
   }
   
-  /* Map container with fixed height */
+  
   .map {
     display: flex;
     flex-direction: column;
@@ -67,7 +67,9 @@ body {
     width: 100%;
     position: relative;
     z-index: 0; /* Ensure map is below other content */
-    border: 5px solid red; /* Add a border for better visibility */
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C;
+    border-radius: 8px; 
   }
   
   .map-container {
@@ -298,9 +300,18 @@ body {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    background-color: #F0E68C;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid red;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: translateX(-80%);
+    z-index: 2; /* Ensure it's above the .testing element */
+    background: linear-gradient(to bottom, #EDEADE, white);
+  }
+
+  .weather:hover {
+    transform: translateX(-0%);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 12px 40px rgba(0, 0, 0, 0.2);
   }
   
   .weather h3 {
@@ -309,6 +320,30 @@ body {
   
   .weather p {
     margin: 5px 0;
+  }
+
+  .weather:hover ~ .testing {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .testing {
+    position: absolute; /* Position it absolutely within the .map */
+    top: -5px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1; /* Ensure it's below the .weather element */
+    transition: opacity 0.3s ease;
+  }
+
+  .flashing-arrow {
+    animation: flash 0.5s infinite;
+  }
+  
+  @keyframes flash {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
   }
   
   

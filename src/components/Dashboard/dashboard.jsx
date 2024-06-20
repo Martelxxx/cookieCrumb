@@ -282,9 +282,11 @@ useEffect(() => {
               <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="map">
+                <p className="testing"><h3><span class="flashing-arrow">⬅</span>Weather</h3>
+                    </p>
                 <div className='weather'>
-            <p>Temperature: {weather.current.temp_c}°C</p>
-            <p>Condition: {weather.current.condition.text}</p>
+            <p><b>Temperature:</b> {weather.current.temp_c}°C</p>
+            <p><b>Condition:</b> {weather.current.condition.text}</p>
             </div>
               {location.latitude && location.longitude ? (
                 <MapContainer
