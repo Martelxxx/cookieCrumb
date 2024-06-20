@@ -256,14 +256,16 @@ const Dashboard = () => {
               <div><p>Total matches: {matchingGeolocations.length}</p></div>
               <div className='matches'>
                 {matchingGeolocations.map((geo) => (
-                  <div key={geo._id}>
+                  <div key={geo._id} className="geo-container">
                     <p>User Name: {geo.username}</p>
+                    <p>(User Profile Pic Here)</p>
                     <p>Paths Crossed At: {new Date(geo.timestamp).toLocaleString()}</p>
                     <p>Likes: {likes[geo._id]}</p>
                     <button onClick={() => handleLike(geo._id)}>Like</button>
                     <button onClick={() => setCurrentRecipient(geo._id)}>Post to Wall</button>
+                    <hr></hr>
                     {currentRecipient === geo._id && (
-                        <div>
+                        <div className="message-container">
                         <input
                             type="text"
                             value={wallMessage}

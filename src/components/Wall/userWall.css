@@ -1,10 +1,11 @@
 .wallSetCon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  padding: 05px;
+}
   
   .wallSettings {
     position: absolute; /* Keeps it positioned relative to its closest positioned ancestor */
@@ -29,7 +30,7 @@
     border-bottom: 10px solid #D2B48C;
 }
   
-  .wallSettings h1 {
+.wallSettings h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
@@ -115,16 +116,41 @@
   .wallMessages {
     display: flex;
     flex-direction: column;
+    margin: 16px 0;
     gap: 1rem;
     padding: 1rem;
     border-radius: 8px;
-    background: rgba(250, 249, 246, 0.1);
+    background-color: rgba(242, 210, 189, 0.3);
+    /* background: rgba(250, 249, 246, 0.1); */
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     transform: perspective(600px) rotateX(0deg);
     transition: transform 0.5s;
+    border: 2px solid #483C32;
     /* background-color: #FAF9F6; */
     align-items: center;
     height: 90vh;
     width: 90%;
+    line-height: 1.6;
+  }
+
+  .wallMessages::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.05),
+      rgba(0, 0, 0, 0.05) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+    pointer-events: none;
+  }
+
+  .wallMessages div {
+    margin: 8px 0;
   }

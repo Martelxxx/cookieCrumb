@@ -104,26 +104,23 @@ const Profile = () => {
         <p>First Name: {user.firstName}</p>
         <p>Last Name: {user.lastName}</p>
         {user.profilePicture && (
-          <div>
+          <div className="profilePictureSection">
             <p>Picture Here</p>
-            {user.profilePicture ? (
-            <img src={user.profilePicture} alt="Profile" style={{ width: '100px', height: '100px' }} />
-            ) : (
-            <p>No profile picture</p>
-            )}
+            <img src={user.profilePicture} alt="Profile" className="profileImage" />
             <button onClick={handleRemove}>Remove Picture</button>
           </div>
         )}
-        <div>
+        <div className="fileUploadSection">
           <input type="file" onChange={handleFileChange} />
           <button onClick={handleUpload}>Upload</button>
         </div>
-        {message && <p>{message}</p>}
+        {message && <p className="message">{message}</p>}
         <button onClick={handleShowUpdateForm}>Update Information</button>
         {showUpdateForm && <UpdateForm user={user} setMessage={setMessage} />}
       </div>
     </div>
   );
+  
 };
 
 export default Profile;

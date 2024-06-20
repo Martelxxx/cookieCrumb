@@ -7,6 +7,8 @@ const UserWall = ({ userId }) => {
   const { user } = useUser();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [currentMessage, setCurrentMessage] = useState(null)
+  const [reply, setReply] = useState('')
 
   const fetchMessages = async () => {
     try {
@@ -43,21 +45,55 @@ const UserWall = ({ userId }) => {
     }
   };
 
+  const handleReply = (msgId) => {
+      setReply('');
+      setCurrentMessage(null);
+
+      const newReply = {
+        _id: new Date().getTime().toString(),
+        sender: { username: 'Your Username' }, // Replace with actual sender's username
+        message: reply,
+        timestamp: new Date(),
+      };
+
+      // Update messages state with new reply
+      setMessages(prevMessages => 
+        prevMessages.map(msg => 
+          msg._id === msgId ? { ...msg, replies: [...(msg.replies || []), newReply] } : msg
+        )
+      );
+  }
+
   return (
     <div className="wallSetCon">
       <div className="wallSettings">
         <h2>Wall</h2>
-        {/* <div className="wallMessages"> */}
-          {messages && messages.map((msg) => (
-            <div key={msg._id} className="wallMessages">
-              <div>From: {msg.sender.username}</div>
-              {/* <div>Recipient: {msg.recipient}</div> */}
-              <div>Message: {msg.message}</div>
-              <div>{new Date(msg.timestamp).toLocaleString()}</div>
-            </div>
-          ))}
-        {/* </div> */}
-        <button className="refreshButton" onClick={fetchMessages}>Refresh Messages</button> {/* Button to fetch messages */}
+        {messages && messages.map((msg) => (
+          <div key={msg._id} className="wallMessages">
+            <div>From: {msg.sender.username}</div>
+            <div>Message: {msg.message}</div>
+            <div>{new Date(msg.timestamp).toLocaleString()}</div>
+            <button onClick={() => setCurrentMessage(msg._id)}>Reply</button>
+            {currentMessage === msg._id && (
+              <div className="replySection">
+                <textarea
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                  placeholder="Write your reply..."
+                />
+                <button onClick={() => handleReply(msg._id)}>Submit Reply</button>
+              </div>
+            )}
+            {msg.replies && msg.replies.map(reply => (
+              <div key={reply._id} className="replyMessage">
+                
+                <div>Message: {reply.message}</div>
+                <div>{new Date(reply.timestamp).toLocaleString()}</div>
+              </div>
+            ))}
+          </div>
+        ))}
+        <button className="refreshButton" onClick={fetchMessages}>Refresh Messages</button>
       </div>
     </div>
   );

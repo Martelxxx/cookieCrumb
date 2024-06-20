@@ -185,6 +185,7 @@ body {
     padding-left: 5%;
     padding-right: 5%;
     font-size: 0.8rem;
+    background-color: #483C32;
 }
 
 .mainPage {
@@ -199,6 +200,51 @@ body {
   .mainPage.shifted1 {
     transform: translateX(-500px);
     transition: transform 0.5s ease-in-out;
+  }
+
+  .geo-container {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .geo-container p {
+    margin: 8px 0;
+  }
+  
+  .geo-container button {
+    margin-right: 8px;
+  }
+  
+  .message-container {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+  }
+  
+  .message-container input {
+    width: calc(100% - 110px);
+    padding: 8px;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .message-container button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .message-container button:hover {
+    background-color: #0056b3;
   }
 
   
