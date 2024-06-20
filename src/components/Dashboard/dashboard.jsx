@@ -31,6 +31,40 @@ const Dashboard = () => {
   const [showWall, setShowWall] = useState(false);
   const [wallMessage, setWallMessage] = useState('');
   const [currentRecipient, setCurrentRecipient] = useState(null);
+  const [weather, setWeather] = useState(null);
+
+  const quotes = [
+    "There is a fine line between serendipity and stalking. - David Coleman",
+    "Most discoveries even today are a combination of serendipity and of searching. - Siddhartha Mukherjee",
+    "I just like the word 'serendipity'. - Noah Centineo (and Adam Brown)",
+    "Sometimes life drops blessings in your lap without your lifting a finger. Serendipity, they call it. - Charlton Heston",
+    "There are no strangers here; Only friends you haven't yet met. - William Butler Yeats",
+    "Strangers are just friends waiting to happen. - Rod McKuen",
+    "Meeting new people and learning new things makes me feel more connected to the world and helps me to grow as a person. - Amanda Schull",
+    "Each friend represents a world in us, a world possibly not born until they arrive. - Anaïs Nin"
+  ];
+
+  const [currentQuote, setCurrentQuote] = useState(quotes[0]);
+  const [quoteKey, setQuoteKey] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      setCurrentQuote(quotes[randomIndex]);
+      setQuoteKey(prevKey => prevKey + 1);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [quotes]);
+
+  const lines = currentQuote.split('. ').map((line, index, array) => {
+    const text = index === array.length - 1 ? line : `${line}.`;
+    return (
+      <div key={index} className="typeText" style={{ animationDelay: `${index * 2}s` }}>
+        {text}
+      </div>
+    );
+  });
 
   useEffect(() => {
     let intervalId;
@@ -159,6 +193,22 @@ const Dashboard = () => {
 //     }
 //   }, [user]);
 
+// Fetch weather data when location updates
+useEffect(() => {
+    const fetchWeather = async () => {
+      if (location.latitude && location.longitude) {
+        try {
+          const response = await axios.get(`https://api.weatherapi.com/v1/current.json?key=2d7837795a4548a58be145553241505&q=${location.latitude},${location.longitude}`);
+          setWeather(response.data);
+        } catch (error) {
+          console.error('Error fetching weather data:', error);
+        }
+      }
+    };
+
+    fetchWeather();
+  }, [location]);
+
   const handleOnClick = () => {
     setShowProfilePicture((prevShowProfilePicture) => !prevShowProfilePicture);
   };
@@ -167,7 +217,7 @@ const Dashboard = () => {
     if (coord1 === null || coord2 === null) {
       return false;
     }
-    return coord1.toFixed(3) === coord2.toFixed(3);
+    return coord1.toFixed(5) === coord2.toFixed(5); // amount of decimals in search coordinates
   };
 
   const handleWallClick = () => {
@@ -222,7 +272,7 @@ const Dashboard = () => {
           <div className="dashboard-container">
             <div className="dashboard-content">
               <h2>Welcome to Crumb Trail, {user.firstName}</h2>
-              <p>This is the home page. Howdy</p>
+              <h4 key={quoteKey} className="typeText">{lines}</h4>
               <p>You have {totalLikes} cookies.</p>
               <div className="proPic">
                 {user.profilePicture && (
@@ -232,6 +282,10 @@ const Dashboard = () => {
               <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="map">
+                <div className='weather'>
+            <p>Temperature: {weather.current.temp_c}°C</p>
+            <p>Condition: {weather.current.condition.text}</p>
+            </div>
               {location.latitude && location.longitude ? (
                 <MapContainer
                   center={[location.latitude, location.longitude]}
@@ -250,19 +304,19 @@ const Dashboard = () => {
               )}
             </div>
             <div className='profileInfo'>
-              <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Error ab totam tenetur facere dolorum beatae veritatis cumque sapiente officia modi. Repudiandae explicabo architecto, harum totam voluptates eveniet! Iusto, eveniet sint?
+              <div className='paths'>
+                <h2>Paths Crossed</h2>"Exciting news! Below, you'll find a dynamic display of all the fascinating individuals you've encountered in the last 24 hours. Who knows what interesting connections await? Dive in and explore the paths that have crossed!
               </div>
               <div><p>Total matches: {matchingGeolocations.length}</p></div>
               <div className='matches'>
                 {matchingGeolocations.map((geo) => (
                   <div key={geo._id} className="geo-container">
                     <p>User Name: {geo.username}</p>
-                    <p>(User Profile Pic Here)</p>
+                    <p>(User Profile 😊 Pic Here)</p>
                     <p>Paths Crossed At: {new Date(geo.timestamp).toLocaleString()}</p>
-                    <p>Likes: {likes[geo._id]}</p>
-                    <button onClick={() => handleLike(geo._id)}>Like</button>
-                    <button onClick={() => setCurrentRecipient(geo._id)}>Post to Wall</button>
+                    <p>Cookies: {likes[geo._id]}</p>
+                    <button onClick={() => handleLike(geo._id)}>Send Cookie</button>
+                    <button onClick={() => setCurrentRecipient(geo._id)}>Post</button>
                     <hr></hr>
                     {currentRecipient === geo._id && (
                         <div className="message-container">

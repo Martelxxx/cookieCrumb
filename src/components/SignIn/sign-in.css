@@ -96,6 +96,7 @@ body {
 
 .inputButton:hover {
   background-color: #d86343;
+  transition: background-color 0.3s;
 }
 
 .errorLabel {

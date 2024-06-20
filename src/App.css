@@ -13,9 +13,11 @@
 }
 .logo:hover {
   filter: drop-shadow(0 0 2em #CC7722);
+  transition: background-color 0.3s;
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
+  transition: background-color 0.3s;
 }
 
 @keyframes logo-spin {
@@ -99,6 +101,7 @@
 
   .card button:hover {
     background-color: #C2B280;
+    transition: background-color 0.3s;
   }
 
   .homeContainer {
@@ -139,6 +142,7 @@
   .text:hover {
     background-color: #FFF5EE;
     border: 1px solid #F3E5AB;
+    transition: background-color 0.3s;
   }
 
   

@@ -107,12 +107,12 @@ const Profile = () => {
           <div className="profilePictureSection">
             <p>Picture Here</p>
             <img src={user.profilePicture} alt="Profile" className="profileImage" />
-            <button onClick={handleRemove}>Remove Picture</button>
+            <div><button onClick={handleRemove}>Remove Picture</button></div>
           </div>
         )}
         <div className="fileUploadSection">
           <input type="file" onChange={handleFileChange} />
-          <button onClick={handleUpload}>Upload</button>
+          <div><button onClick={handleUpload}>Upload</button></div>
         </div>
         {message && <p className="message">{message}</p>}
         <button onClick={handleShowUpdateForm}>Update Information</button>
