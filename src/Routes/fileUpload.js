@@ -4,7 +4,6 @@ import path from 'path';
 import User from '../../models/user.js';
 import { fileURLToPath } from 'url';
 
-
 const router = express.Router();
 
 // Define __filename and __dirname to use ES6 modules with CommonJS

@@ -30,7 +30,7 @@ body {
   .dashboard-container > div {
     flex: 1; /* Make the children all the same width */
     height: 100%; /* Make the children all the same height */
-    overflow: auto; /* Add this line */
+    overflow: auto; 
   }
   
   /* Content area for the dashboard (excluding the map) */
@@ -63,7 +63,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-items: center;
-    height: 400px; /* Adjust height as needed */
+    height: 400px; 
     width: 100%;
     position: relative;
     z-index: 0; /* Ensure map is below other content */
@@ -114,12 +114,13 @@ body {
     height: 80%;
     padding: 10%;
     gap: 100px;;
+    
   }
   
   .profileCon > div {
     flex: 1; /* Make the children all the same height */
     width: 100%; /* Make the children all the same width */
-    position: relative; /* Add this line */
+    position: relative; 
 }
 
 .profileCon::before {
@@ -127,23 +128,23 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  border-width: 0 50px 50px 0; /* Adjust as needed */
+  border-width: 0 50px 50px 0; 
   border-style: solid;
-  border-color: #fff #fff transparent transparent; /* Adjust as needed */
-  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.3); /* Adjust as needed */
+  border-color: #fff #fff transparent transparent; 
+  box-shadow: -5px 5px 5px rgba(0, 0, 0, 0.3); 
 }
 
 .flapText1 {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    right: 5px; /* Adjust as needed */
+    top: 10px; 
+    right: 5px; 
     transform: rotate(-315deg);
-    color: #E1C16E; /* Adjust as needed */
-    font-size: 15px; /* Adjust as needed */
+    color: #E1C16E; 
+    font-size: 15px; 
   }
 
   .flapText1:hover {
-    text-shadow: 2px 2px 4px red; /* Adjust as needed */
+    text-shadow: 2px 2px 4px red; 
     background-color: #DAA06D;
     border-radius: 15px;
     cursor: pointer;
@@ -153,16 +154,16 @@ body {
 
 .flapText2 {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    left: -5px; /* Adjust as needed */
+    top: 10px; 
+    left: -5px; 
     transform: rotate(-45deg);
-    color: #E1C16E; /* Adjust as needed */
-    font-size: 15px; /* Adjust as needed */
+    color: #E1C16E; 
+    font-size: 15px; 
     z-index: 1;
 }
 
 .flapText2:hover {
-    text-shadow: 2px 2px 4px red; /* Adjust as needed */
+    text-shadow: 2px 2px 4px red; 
     background-color: #DAA06D;
     border-radius: 15px;
     cursor: pointer;
@@ -174,10 +175,10 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    border-width: 0 0 50px 50px; /* Adjust as needed */
+    border-width: 0 0 50px 50px; 
     border-style: solid;
-    border-color: transparent transparent #fff #fff; /* Adjust as needed */
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); /* Adjust as needed */
+    border-color: transparent transparent #fff #fff; 
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); 
   }
 
   .matches {
@@ -202,7 +203,7 @@ body {
   }
   
   .mainPage.shifted {
-    transform: translateX(500px); /* Adjust as needed */
+    transform: translateX(500px); 
   }
 
   .mainPage.shifted1 {
@@ -257,6 +258,10 @@ body {
   }
 
   .paths {
+    border: 1px solid red;
+    margin: 1%;
+    padding: 10px;
+    font-size: 0.8rem;
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 1s forwards;
@@ -279,7 +284,6 @@ body {
   }
   
   .typeText {
-    /* font-family: 'Courier New', Courier, monospace; */
     font-size: 1em;
     display: inline-block;
     /* white-space: nowrap; */
@@ -296,6 +300,8 @@ body {
   }
 
   .weather {
+    display: flex;
+    justify-content: space-around;
     border-radius: 5px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -304,9 +310,10 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    transform: translateX(-80%);
+    transform: translateX(-70%);
     z-index: 2; /* Ensure it's above the .testing element */
     background: linear-gradient(to bottom, #EDEADE, white);
+    font-size: 0.8rem;
   }
 
   .weather:hover {
@@ -328,12 +335,13 @@ body {
   }
 
   .testing {
-    position: absolute; /* Position it absolutely within the .map */
-    top: -5px; /* Adjust as needed */
-    left: 50%;
+    position: absolute; 
+    top: -5px; 
+    left: 60%;
     transform: translateX(-50%);
     z-index: 1; /* Ensure it's below the .weather element */
     transition: opacity 0.3s ease;
+    white-space: nowrap;
   }
 
   .flashing-arrow {
@@ -346,6 +354,31 @@ body {
     100% { opacity: 1; }
   }
   
+  .pulse {
+    font-weight: bold;
+    animation: heartbeat 1.5s infinite;
+    color: #722F37;
+    display: inline-block; 
+
+  }
+  
+  @keyframes heartbeat {
+    0% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.7);
+    }
+    40% {
+      transform: scale(1);
+    }
+    60% {
+      transform: scale(1.7);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
   
 
   

@@ -24,14 +24,14 @@ const Dashboard = () => {
   const [likes, setLikes] = useState({});
   const [userLikes, setUserLikes] = useState(null);
   const [totalLikes, setTotalLikes] = useState(0);
-//   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [recipientId, setRecipientId] = useState(null);
-  const [newMessages, setNewMessages] = useState({}); // State to track new messages for each user
-//   const [showChat, setShowChat] = useState(false);
+//   const [recipientId, setRecipientId] = useState(null);
+//   const [newMessages, setNewMessages] = useState({}); // State to track new messages for each user
   const [showWall, setShowWall] = useState(false);
   const [wallMessage, setWallMessage] = useState('');
   const [currentRecipient, setCurrentRecipient] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [topUsers, setTopUsers] = useState([]);
+
 
   const quotes = [
     "There is a fine line between serendipity and stalking. - David Coleman",
@@ -169,30 +169,6 @@ const Dashboard = () => {
     }
   }, [user]);
 
-//   useEffect(() => {
-//     if (user && user.id) {
-//       const socket = io('http://localhost:3015');
-
-//       console.log('Joining room:', user.id);
-//       socket.emit('joinRoom', user.id);
-
-//       socket.on('privateMessage', (data) => {
-//         console.log('Message received:', data);
-//         const { from } = data;
-//         setNewMessages((prev) => ({
-//           ...prev,
-//           [from]: (prev[from] || 0) + 1,
-//         }));
-//         setShowChat(true); // Show chat window when a new message is received
-//         toast('New message received!');
-//       });
-
-//       return () => {
-//         socket.off('privateMessage');
-//       };
-//     }
-//   }, [user]);
-
 // Fetch weather data when location updates
 useEffect(() => {
     const fetchWeather = async () => {
@@ -209,6 +185,21 @@ useEffect(() => {
     fetchWeather();
   }, [location]);
 
+  useEffect(() => {
+    if (geolocations.length > 0) {
+      const userCount = geolocations.reduce((acc, geo) => {
+        acc[geo.username] = (acc[geo.username] || 0) + 1;
+        return acc;
+      }, {});
+
+      const sortedUsers = Object.entries(userCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3);
+
+      setTopUsers(sortedUsers);
+    }
+  }, [geolocations]);
+
   const handleOnClick = () => {
     setShowProfilePicture((prevShowProfilePicture) => !prevShowProfilePicture);
   };
@@ -217,7 +208,7 @@ useEffect(() => {
     if (coord1 === null || coord2 === null) {
       return false;
     }
-    return coord1.toFixed(5) === coord2.toFixed(5); // amount of decimals in search coordinates
+    return coord1.toFixed(6) === coord2.toFixed(6); // amount of decimals in search coordinates
   };
 
   const handleWallClick = () => {
@@ -245,12 +236,6 @@ useEffect(() => {
     }
   };
 
-//   const initiateChat = (id) => {
-//     setRecipientId(id);
-//     setNewMessages((prev) => ({ ...prev, [id]: 0 })); // Reset new messages count for this recipient
-//     setShowChat(true); // Show chat window when initiating chat
-//   };
-
   if (loading) {
     return <div>Loading...</div>; // Handle loading state
   }
@@ -273,7 +258,7 @@ useEffect(() => {
             <div className="dashboard-content">
               <h2>Welcome to Crumb Trail, {user.firstName}</h2>
               <h4 key={quoteKey} className="typeText">{lines}</h4>
-              <p>You have {totalLikes} cookies.</p>
+              <p>You have <span className='pulse'> {totalLikes} </span> cookies.</p>
               <div className="proPic">
                 {user.profilePicture && (
                   <img src={user.profilePicture} alt="Profile" style={{ width: '100px', height: '100px' }} />
@@ -282,11 +267,14 @@ useEffect(() => {
               <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="map">
-                <p className="testing"><h3><span class="flashing-arrow">⬅</span>Weather</h3>
+                <p className="testing"><h3><span class="flashing-arrow">⬅</span> {weather.location.name} Weather</h3>
                     </p>
                 <div className='weather'>
-            <p><b>Temperature:</b> {weather.current.temp_c}°C</p>
+                    <div>
+            <p><b>Temperature:</b> {weather.current.temp_f}°F</p>
             <p><b>Condition:</b> {weather.current.condition.text}</p>
+            </div>
+            <div><img src={weather.current.condition.icon} style={{ width: '50px', height: '50px' }}/></div>
             </div>
               {location.latitude && location.longitude ? (
                 <MapContainer
@@ -307,9 +295,17 @@ useEffect(() => {
             </div>
             <div className='profileInfo'>
               <div className='paths'>
-                <h2>Paths Crossed</h2>"Exciting news! Below, you'll find a dynamic display of all the fascinating individuals you've encountered in the last 24 hours. Who knows what interesting connections await? Dive in and explore the paths that have crossed!
+                <h3>Paths Crossed</h3>
+                <p>Exciting news! Below, you'll find a dynamic display of all the fascinating individuals you've encountered in the last 24 hours. Who knows what interesting connections await? Dive in and explore the paths that have crossed!</p>
+                <div className="top-users">
+                <h3>Serendipitous Users:</h3>
+                {topUsers.map(([username, count]) => (
+                <li key={username}>You've crossed paths with <b>{username}</b> {count} times</li>
+                ))}
+                </div>
               </div>
-              <div><p>Total matches: {matchingGeolocations.length}</p></div>
+              
+              <div><h4>Total matches: {matchingGeolocations.length}</h4></div>
               <div className='matches'>
                 {matchingGeolocations.map((geo) => (
                   <div key={geo._id} className="geo-container">

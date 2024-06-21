@@ -56,6 +56,8 @@
     z-index: 1000;
     width: 350px;
     text-align: center;
+    border-top: 20px solid #F5DEB3;
+    border-bottom: 10px solid #D2B48C;;
   }
   
   .profileSettings h1 {
